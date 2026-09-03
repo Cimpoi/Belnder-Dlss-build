@@ -8,11 +8,9 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Scarica codice sorgente Blender
-        uses: actions/checkout@v4
-        with:
-          repository: pmoursnv/blender
-          ref: dlss
+      - name: Scarica codice sorgente da Blender Gitea
+        run: |
+          git clone -b dlss https://projects.blender.org/pmoursnv/blender.git .
 
       - name: Configura ambiente MSVC
         uses: ilammy/msvc-dev-cmd@v1
