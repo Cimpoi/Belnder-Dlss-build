@@ -8,7 +8,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Scarica codice sorgente da Blender Gitea
+      - name: Clona repository Blender
         run: |
           git clone -b dlss https://projects.blender.org/pmoursnv/blender.git .
 
