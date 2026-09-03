@@ -1,0 +1,37 @@
+name: Compilazione Blender DLSS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Scarica codice sorgente Blender
+        uses: actions/checkout@v4
+        with:
+          repository: pmoursnv/blender
+          ref: dlss
+
+      - name: Configura ambiente MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Scarica dipendenze precompilate
+        run: |
+          make.bat update
+
+      - name: Genera file di build con CMake
+        run: |
+          cmake -S . -B build -DWITH_CYCLES_DEVICE_CUDA=ON -DWITH_DLSS=ON
+
+      - name: Esegui compilazione
+        run: |
+          cmake --build build --config Release
+
+      - name: Carica eseguibile compilato
+        uses: actions/upload-artifact@v4
+        with:
+          name: Blender-DLSS-Windows
+          path: build/bin/Release/
+          
