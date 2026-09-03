@@ -20,7 +20,8 @@ jobs:
 
       - name: Scarica dipendenze precompilate
         run: |
-          echo y | make.bat update
+          echo y > yes.txt
+          make.bat update < yes.txt
 
       - name: Genera file di build con CMake
         run: |
