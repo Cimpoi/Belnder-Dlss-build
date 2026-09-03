@@ -13,19 +13,23 @@ jobs:
     steps:
       - name: Clona repository Blender
         run: |
-          git clone -b dlss https://projects.blender.org/pmoursnv/blender.git .
+          git clone -b dlss https://projects.blender.org/pmoursnv/blender.git blender
+
+      - name: Scarica SDK NVIDIA DLSS
+        run: |
+          git clone https://github.com/NVIDIA/DLSS.git dlss_sdk
 
       - name: Configura ambiente MSVC
         uses: ilammy/msvc-dev-cmd@v1
 
       - name: Scarica dipendenze precompilate
         run: |
-          echo y > yes.txt
-          make.bat update < yes.txt
+          cd blender
+          python build_files\utils\make_update.py
 
       - name: Genera file di build con CMake
         run: |
-          cmake -S . -B build -DWITH_CYCLES_DEVICE_CUDA=ON -DWITH_DLSS=ON
+          cmake -S blender -B build -DWITH_DLSS=ON -DDLSS_SDK_ROOT=%CD%\dlss_sdk
 
       - name: Esegui compilazione
         run: |
